@@ -1,0 +1,207 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        // This is the theme of your application.
+        //
+        // Try running your application with "flutter run". You'll see the
+        // application has a blue toolbar. Then, without quitting the app, try
+        // changing the primarySwatch below to Colors.green and then invoke
+        // "hot reload" (press "r" in the console where you ran "flutter run",
+        // or simply save your changes to "hot reload" in a Flutter IDE).
+        // Notice that the counter didn't reset back to zero; the application
+        // is not restarted.
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        backgroundColor: Colors.black45,
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            child: const MyHomePage(title: 'Flutter Demo Home Page'),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
+
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+  List<Icon> scorceKeeper = [];
+  var question = [
+    {
+      "Question":
+          "The age of most trees can be found out by counting the number of annual rings",
+      "Answer": "true"
+    },
+    {
+      "Question":
+          "Plants fullfill a majority of their water needs using their shoots.",
+      "Answer": "false"
+    },
+    {
+      "Question":
+          "A plant that lives for several years is called an annual plant.",
+      "Answer": "false"
+    },
+    {"Question": "Moss produces flowers.", "Answer": "false"},
+    {
+      "Question": "Angiosperms are plants that produce flowers.",
+      "Answer": "flase"
+    },
+    {"Question": "Seaweed is a type of plant.", "Answer": "true"},
+    {"Question": "Seaweeds can photosynthesis like plants.", "Answer": "true"},
+    {
+      "Question": "Stomata are mostly found on the bark of trees.",
+      "Answer": "false"
+    },
+    {
+      "Question":
+          "Deciduous trees are the trees taht shed their leaves for part of the year.",
+      "Answer": "true"
+    },
+    {
+      "Question": "Green plants generally contain chlorophyll.",
+      "Answer": "true"
+    },
+  ];
+
+  void checkAnswer(answer) {
+
+    print(question[_counter % 10]['Answer'].toString()==answer);
+    setState(() {
+
+      print(question[_counter % 10]['Answer'].toString()+"=="+answer);
+      if(question[_counter % 10]['Answer'].toString()==answer){
+        scorceKeeper.add(Icon(
+          Icons.check,
+          color: Colors.green,
+        ));
+      }else{
+        scorceKeeper.add(Icon(
+          Icons.close,
+          color: Colors.red,
+        ));
+      }
+      _counter++;
+
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Expanded(
+          flex: 5,
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Center(
+              child: Text(
+                question[_counter % 10]['Question'].toString(),
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 25.0, color: Colors.white),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(15.0),
+            child: TextButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.green),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: BorderSide(color: Colors.green),
+                  )),
+                ),
+                child: Text(
+                  'True',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                  ),
+                ),
+                onPressed: (){checkAnswer("true");}
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(15.0),
+            child: TextButton(
+              // style: TextButton.styleFrom(
+              //     backgroundColor: Colors.green,
+              //
+              // ),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: BorderSide(color: Colors.red),
+                )),
+              ),
+              child: Text(
+                'False',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                ),
+              ),
+              onPressed: () {
+                checkAnswer('false');
+                //The user picked true.
+              },
+            ),
+          ),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: scorceKeeper,
+          ),
+        )
+        //TODO: Add a Row here as your score keeper
+      ],
+    );
+  }
+}
